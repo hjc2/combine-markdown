@@ -1,40 +1,27 @@
-const { Plugin, TFolder, Notice, Modal, Setting } = require('obsidian');
+const { Plugin, TFolder, Notice } = require('obsidian');
+const { FuzzySuggestModal } = require('obsidian');
 
-class FolderSelectorModal extends Modal {
+class FolderSelectorModal extends FuzzySuggestModal {
     constructor(app, onSubmit) {
         super(app);
         this.onSubmit = onSubmit;
     }
 
+    getItems() {
+        return this.getAllFolders();
+    }
+
+    getItemText(folder) {
+        return folder.path;
+    }
+
+    onChooseItem(folder, evt) {
+        this.onSubmit(folder.path);
+    }
+    
     onOpen() {
-        const { contentEl } = this;
-        contentEl.createEl('h2', { text: 'Select folder to combine' });
-
-        const folders = this.getAllFolders();
-        
-        new Setting(contentEl)
-            .setName('Folder')
-            .setDesc('Choose the folder containing markdown files')
-            .addDropdown(dropdown => {
-                folders.forEach(folder => {
-                    dropdown.addOption(folder.path, folder.path);
-                });
-                dropdown.onChange(value => {
-                    this.selectedFolder = value;
-                });
-                if (folders.length > 0) {
-                    this.selectedFolder = folders[0].path;
-                }
-            });
-
-        new Setting(contentEl)
-            .addButton(btn => btn
-                .setButtonText('Combine')
-                .setCta()
-                .onClick(() => {
-                    this.close();
-                    this.onSubmit(this.selectedFolder);
-                }));
+        super.onOpen();
+        this.setPlaceholder('Type to search for a folder...');
     }
 
     getAllFolders() {
@@ -52,11 +39,6 @@ class FolderSelectorModal extends Modal {
         
         traverse(rootFolder);
         return folders;
-    }
-
-    onClose() {
-        const { contentEl } = this;
-        contentEl.empty();
     }
 }
 
@@ -149,4 +131,3 @@ class CombineMarkdownPlugin extends Plugin {
 }
 
 module.exports = CombineMarkdownPlugin;
-//
