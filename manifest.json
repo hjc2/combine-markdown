@@ -1,9 +1,9 @@
 {
   "id": "combine-markdown",
   "name": "Combine Markdown Files",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "minAppVersion": "0.15.0",
-  "description": "Combines markdown files from a folder into a single document",
+  "description": "Combines markdown files from a directory into a single document",
   "author": "Hugh Coleman",
   "isDesktopOnly": false
 }

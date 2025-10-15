@@ -19,6 +19,7 @@ class FolderSelectorModal extends FuzzySuggestModal {
         this.onSubmit(folder.path);
     }
     
+    // placeholder
     onOpen() {
         super.onOpen();
         this.setPlaceholder('Type to search for a folder...');
@@ -44,12 +45,12 @@ class FolderSelectorModal extends FuzzySuggestModal {
 
 class CombineMarkdownPlugin extends Plugin {
     async onload() {
-        // Add ribbon icon
+        // ribbon icon
         this.addRibbonIcon('files', 'Combine Markdown Files', () => {
             this.showFolderSelector();
         });
 
-        // Add command
+        // command
         this.addCommand({
             id: 'combine-markdown-files',
             name: 'Combine markdown files from folder',
@@ -93,7 +94,7 @@ class CombineMarkdownPlugin extends Plugin {
             combinedContent += `\n\n---\n\n`;
         }
 
-        // Create the combined file
+        // create the combined file
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
         const outputFileName = `combined-${folder.name}-${timestamp}.md`;
         
@@ -101,7 +102,7 @@ class CombineMarkdownPlugin extends Plugin {
         
         new Notice(`Created ${outputFileName} with ${markdownFiles.length} files`);
         
-        // Open the new file
+        // open new file
         const newFile = this.app.vault.getAbstractFileByPath(outputFileName);
         if (newFile) {
             await this.app.workspace.getLeaf().openFile(newFile);
@@ -123,7 +124,7 @@ class CombineMarkdownPlugin extends Plugin {
         
         traverse(folder);
         
-        // Sort by path for consistent ordering
+        // sort by path
         files.sort((a, b) => a.path.localeCompare(b.path));
         
         return files;
